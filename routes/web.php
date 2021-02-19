@@ -29,6 +29,12 @@ Route::get('/vehicles/edit/{id}', [VehicleController::class, 'edit']);
 Route::post('/vehicles/edit_save', [VehicleController::class, 'edit_save']);
 Route::get('/vehicles/delete/{id}', [VehicleController::class, 'delete']);
 
+
+
+
+
+
+
 });
 
 
