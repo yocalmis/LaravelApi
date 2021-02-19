@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-
+	/***dashboard***/
         $data["name"] = $request->session()->get("em");
         // return view('index', $data);
         return redirect('vehicles');
@@ -21,13 +21,15 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-
+	/***login***/
         return view('login');
     }
 
     public function login_control(Request $request)
     {
-
+	/***authcontrol***/
+	
+	/***validators***/
         $validator = Validator::make($request->all(), [
             'email' => 'required',
             'password' => 'required',
@@ -36,12 +38,12 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect('login')->withErrors($validator)->withInput();
         }
-
+	/***form controls***/
         $em = ControlHelper::test_input($request->input('email'));
         $ps = md5(ControlHelper::test_input($request->input('password')));
 
         if (count(User::where('email', $em)->where('password', $ps)->get()) == 0) {return redirect('login')->with('error', 'Member not found!');}
-
+	/***login token update***/
         $token = md5($request->input('email') . "_" . date("Y-m-d H:i:s"));
         $user = User::where('email', $em)
             ->update(['token' => $token]);
@@ -53,7 +55,7 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-
+	/***logout***/
         $request->session()->flush();
         return Redirect('login')->with('message', 'Logout Successful!');
 
@@ -61,19 +63,19 @@ class UserController extends Controller
 
     public function forgot_password(Request $request)
     {
-
+	/***forgot password***/
         return view('forgot-password');
     }
 
     public function register(Request $request)
     {
-
+	/***register***/
         return view('register');
     }
 
     public function register_success(Request $request)
     {
-
+	/***register post***/
         if ($request->input('repass') != $request->input('pass')) {
             return redirect('register')->with('error', 'Passwords do not match!');
         }
@@ -88,7 +90,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect('register')->withErrors($validator)->withInput();
         }
-
+	/***Insert***/
         $user = new User;
         $user->name = ControlHelper::test_input($request->input('name'));
         $user->email = ControlHelper::test_input($request->input('email'));
@@ -101,7 +103,7 @@ class UserController extends Controller
 
     public function forgot_send(Request $request)
     {
-
+	/***Forgot Send***/
         $validator = Validator::make($request->all(), [
             'email' => 'required',
         ]);
@@ -109,7 +111,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect('forgot_password')->withErrors($validator)->withInput();
         }
-
+	/***Form Controls***/
         $em = ControlHelper::test_input($request->input('email'));
         if (count(User::where('email', $em)->get()) == 0) {return redirect('forgot_password')->with('error', 'E-Mail adress not found!');}
 
@@ -121,6 +123,7 @@ class UserController extends Controller
             'sifre' => $valid,
             'to' => $em,
         ];
+	/***Forgot Mail Send***/
         mail::send('iletisim', $array, function ($message) use ($array) {
             $message->from('yusuf@aaa.com', 'İletişim');
             $message->subject("Şifre Yenileme İsteği");
@@ -132,7 +135,7 @@ class UserController extends Controller
 
     public function new_pass(Request $request, $id)
     {
-
+	/***New Pass***/
         if (count(User::where('validation', ControlHelper::test_input($id))->get()) == 0) {return redirect('forgot_password')->with('error', 'Invalid reset code!');}
         return view('new_pass', ['val' => $id]);
 
@@ -140,7 +143,7 @@ class UserController extends Controller
 
     public function new_pass_send(Request $request)
     {
-
+	/***New Pass Update***/
         if ($request->input('repass') != $request->input('pass')) {return redirect('new_pass/' . $request->input('val'))->with('error', '
 Passwords do not match!');}
 

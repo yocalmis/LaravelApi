@@ -13,7 +13,7 @@ class VehicleController extends Controller
 
     public function index(Request $request)
     {
-
+	/***Vehicles Dashboard***/
         $data["name"] = $request->session()->get("em");
         $data["vehicles"] = Vehicle::all();
         return view('vehicle', $data);
@@ -21,7 +21,7 @@ class VehicleController extends Controller
 
     public function add(Request $request)
     {
-
+	/***Add Page***/
         $data["name"] = $request->session()->get("em");
         $data["users"] = User::all();
         return view('vehicle_form', $data);
@@ -30,7 +30,8 @@ class VehicleController extends Controller
     public function add_save(Request $request)
     {
 
-
+	/***Vehicle Add***/
+	/***Vehicle Validators***/
         $validator = Validator::make($request->all(), [
             'plate' => 'required|unique:vehicles',
             'nickname' => 'required|unique:vehicles',
@@ -46,7 +47,7 @@ class VehicleController extends Controller
         if ($validator->fails()) {
             return redirect('vehicles/add')->withErrors($validator)->withInput();
         }
-
+	/***Vehicle Save***/
         $vehicle = new Vehicle;
         $vehicle->plate = ControlHelper::test_input($request->input('plate'));
         $vehicle->nickname = ControlHelper::test_input($request->input('nickname'));
@@ -66,7 +67,7 @@ class VehicleController extends Controller
     public function edit(Request $request, $id)
     {
 
-
+	/***Vehicle Edit***/
         $data["name"] = $request->session()->get("em");
         $data["vehicles"] = Vehicle::where('id', $id)->get();
         $data["users"] = User::all();
@@ -77,7 +78,7 @@ class VehicleController extends Controller
     public function edit_save(Request $request)
     {
 
-
+	/***Vehicle Validators***/
         $validator = Validator::make($request->all(), [
             'plate' => 'required|unique:vehicles,plate,' . $request->input('id'),
             'nickname' => 'required|unique:vehicles,nickname,' . $request->input('id'),
@@ -93,7 +94,7 @@ class VehicleController extends Controller
         if ($validator->fails()) {
             return redirect('vehicles/edit/' . $request->input('id'))->withErrors($validator)->withInput();
         }
-
+	/***Vehicle Update***/
         $vehicle = Vehicle::where('id', $request->input('id'))
             ->update(
                 [
@@ -115,7 +116,7 @@ class VehicleController extends Controller
     public function delete(Request $request, $id)
     {
 
-
+	/***Vehicle Delete***/
         $vehicle = Vehicle::find($id);
         $vehicle->delete();
         return Redirect('vehicles')->with('message', 'Vehicle Delete Successful!');
