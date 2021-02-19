@@ -13,7 +13,7 @@ class VehicleController extends Controller
 
     public function index(Request $request)
     {
-        if (!$request->session()->has('em')) {return redirect('login');}
+
         $data["name"] = $request->session()->get("em");
         $data["vehicles"] = Vehicle::all();
         return view('vehicle', $data);
@@ -21,7 +21,7 @@ class VehicleController extends Controller
 
     public function add(Request $request)
     {
-        if (!$request->session()->has('em')) {return redirect('login');}
+
         $data["name"] = $request->session()->get("em");
         $data["users"] = User::all();
         return view('vehicle_form', $data);
@@ -29,7 +29,7 @@ class VehicleController extends Controller
 
     public function add_save(Request $request)
     {
-        if (!$request->session()->has('em')) {return redirect('login');}
+
 
         $validator = Validator::make($request->all(), [
             'plate' => 'required|unique:vehicles',
@@ -66,7 +66,7 @@ class VehicleController extends Controller
     public function edit(Request $request, $id)
     {
 
-        if (!$request->session()->has('em')) {return redirect('login');}
+
         $data["name"] = $request->session()->get("em");
         $data["vehicles"] = Vehicle::where('id', $id)->get();
         $data["users"] = User::all();
@@ -76,7 +76,7 @@ class VehicleController extends Controller
 
     public function edit_save(Request $request)
     {
-        if (!$request->session()->has('em')) {return redirect('login');}
+
 
         $validator = Validator::make($request->all(), [
             'plate' => 'required|unique:vehicles,plate,' . $request->input('id'),
@@ -115,7 +115,7 @@ class VehicleController extends Controller
     public function delete(Request $request, $id)
     {
 
-        if (!$request->session()->has('em')) {return redirect('login');}
+
         $vehicle = Vehicle::find($id);
         $vehicle->delete();
         return Redirect('vehicles')->with('message', 'Vehicle Delete Successful!');

@@ -53,6 +53,7 @@
         </div>
         <div class="info">
           <a href="assets/#" class="d-block">{{$name}}</a>
+              <li class="breadcrumb-item active"><a href="<?php echo url('/'); ?>/logout">Çıkış</a></li>
         </div>
       </div>
 

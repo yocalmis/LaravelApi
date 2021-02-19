@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        if (!$request->session()->has('em')) {return redirect('login');}
+
         $data["name"] = $request->session()->get("em");
         // return view('index', $data);
         return redirect('vehicles');
@@ -21,13 +21,13 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        if ($request->session()->has('em')) {return redirect('dashboard');}
+
         return view('login');
     }
 
     public function login_control(Request $request)
     {
-        if ($request->session()->has('em')) {return redirect('dashboard');}
+
         $validator = Validator::make($request->all(), [
             'email' => 'required',
             'password' => 'required',
@@ -61,19 +61,19 @@ class UserController extends Controller
 
     public function forgot_password(Request $request)
     {
-        if ($request->session()->has('em')) {return redirect('dashboard');}
+
         return view('forgot-password');
     }
 
     public function register(Request $request)
     {
-        if ($request->session()->has('em')) {return redirect('dashboard');}
+
         return view('register');
     }
 
     public function register_success(Request $request)
     {
-        if ($request->session()->has('em')) {return redirect('dashboard');}
+
         if ($request->input('repass') != $request->input('pass')) {
             return redirect('register')->with('error', 'Passwords do not match!');
         }
@@ -101,7 +101,7 @@ class UserController extends Controller
 
     public function forgot_send(Request $request)
     {
-        if ($request->session()->has('em')) {return redirect('dashboard');}
+
         $validator = Validator::make($request->all(), [
             'email' => 'required',
         ]);
@@ -132,7 +132,7 @@ class UserController extends Controller
 
     public function new_pass(Request $request, $id)
     {
-        if ($request->session()->has('em')) {return redirect('dashboard');}
+
         if (count(User::where('validation', ControlHelper::test_input($id))->get()) == 0) {return redirect('forgot_password')->with('error', 'Invalid reset code!');}
         return view('new_pass', ['val' => $id]);
 
@@ -140,7 +140,7 @@ class UserController extends Controller
 
     public function new_pass_send(Request $request)
     {
-        if ($request->session()->has('em')) {return redirect('dashboard');}
+
         if ($request->input('repass') != $request->input('pass')) {return redirect('new_pass/' . $request->input('val'))->with('error', '
 Passwords do not match!');}
 
