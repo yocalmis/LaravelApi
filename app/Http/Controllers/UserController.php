@@ -122,7 +122,7 @@ class UserController extends Controller
             'to' => $em,
         ];
         mail::send('iletisim', $array, function ($message) use ($array) {
-            $message->from('yusuf@zirvekayseri.com', 'İletişim');
+            $message->from('yusuf@aaa.com', 'İletişim');
             $message->subject("Şifre Yenileme İsteği");
             $message->to($array["to"]);
         });
